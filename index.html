@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Für Ellii <3</title>
+    <style>
+        :root {
+            --pink-accent: #ff7eb9;
+            --pastel-pink: #ffd1dc; 
+            --heart-red: #ff3366;
+            --bg-dark: #0f0f12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Lavalampen Hintergrund */
+        .lava-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f12 100%);
+        }
+
+        .blob {
+            position: absolute;
+            background: var(--pink-accent);
+            filter: blur(80px);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: move 20s infinite alternate ease-in-out;
+        }
+        .blob1 { width: 250px; height: 250px; top: -50px; left: -30px; }
+        .blob2 { width: 350px; height: 350px; bottom: -80px; right: -30px; animation-duration: 25s; }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(30px, 50px); }
+        }
+
+        /* Wrapper */
+        #main-wrap {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* UMSCHLAG */
+        .envelope {
+            width: 100%;
+            height: 220px;
+            background: var(--pastel-pink);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* overflow: visible damit Sticker rausgucken kann */
+        }
+
+        /* Briefklappe */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: #fec1cc;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            z-index: 2;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* Beschriftung */
+        .label-ellii {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: #444;
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 3;
+        }
+
+        /* Sticker (Geht über den Rand hinaus) */
+        .hk-sticker {
+            position: absolute;
+            bottom: -15px; /* Weiter nach unten */
+            right: -15px;  /* Weiter nach rechts */
+            width: 85px;
+            transform: rotate(-10deg);
+            border: 4px solid white;
+            border-radius: 10px;
+            box-shadow: 4px 6px 12px rgba(0,0,0,0.3);
+            z-index: 30; /* Ganz oben */
+            pointer-events: none;
+        }
+
+        /* 3D HERZ (Ohne weissen Punkt, nur Schatten-Tiefe) */
+        .heart-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .heart {
+            width: 30px;
+            height: 30px;
+            background: var(--heart-red);
+            position: relative;
+            transform: rotate(45deg);
+            animation: beat 1.5s infinite;
+            box-shadow: inset -4px -4px 8px rgba(0,0,0,0.2), 0 5px 15px rgba(255, 51, 102, 0.3);
+        }
+        .heart::before, .heart::after {
+            content: '';
+            width: 30px;
+            height: 30px;
+            background: var(--heart-red);
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.15);
+        }
+        .heart::before { top: -15px; left: 0; }
+        .heart::after { left: -15px; top: 0; }
+
+        @keyframes beat {
+            0%, 100% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(1.15); }
+        }
+
+        /* DER BRIEF (OFFEN) */
+        .letter {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 92vw;
+            max-width: 420px;
+            max-height: 85vh;
+            background: var(--pastel-pink);
+            border-radius: 15px;
+            padding: 25px;
+            color: #222;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 100;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 0.6s ease-out;
+        }
+
+        .letter h2 { color: #c2185b; margin-bottom: 15px; text-align: center; font-size: 1.3rem; }
+        .letter p { margin-bottom: 12px; line-height: 1.5; font-size: 0.95rem; }
+        .letter .sig { margin-top: 25px; font-weight: bold; text-align: right; color: #c2185b; font-size: 1.1rem; }
+
+        /* Animation Klassen */
+        .show-letter { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        .shake { animation: shake 0.3s ease; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lava-bg">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+    </div>
+
+    <div id="main-wrap" onclick="handleTap()">
+        <div id="envelope" class="envelope">
+            <div class="envelope-flap"></div>
+            <div class="label-ellii">für Ellii <3</div>
+            
+            <div class="heart-container">
+                <div id="heart" class="heart"></div>
+            </div>
+
+            <img src="image.png" class="hk-sticker" alt="Sticker">
+        </div>
+    </div>
+
+    <div id="letter" class="letter">
+        <h2>Liebe Ellii,</h2>
+        <p>da ich weiß, dass du noch nie einen Brief erhalten hast, versuche ich es dir trotzdem so nah wie möglich zu zeigen.</p>
+        <p>Auch wenn wir uns noch nicht lange kennen, fühle ich mich wirklich wohl. Ich finde es richtig cool, dass wir uns schon kleine Pläne gemacht haben, was wir so unternehmen können, sei es nur ein Telefonat oder ein ganzes Resident Evil Gameplay. Ich freue mich schon richtig drauf!</p>
+        <p>Seitdem du von dir erzählt hast, war ich ehrlicherweise begeistert. Deine kreative und emotionale Seite hat mich direkt gecatcht und ich wollte eigentlich nur mehr.</p>
+        <p>Du bist so eine süße Person, ich habe das Gefühl, ich könnte dich manchmal direkt aufessen. Mir ist noch wichtig, dass du weißt, dass wir immer über alles reden können, ich höre dir gerne zu, was auch immer sein mag.</p>
+        <p>Hab einen tollen Tag!</p>
+        <div class="sig">dein Amo <3</div>
+    </div>
+
+    <script>
+        let taps = 0;
+        const env = document.getElementById('envelope');
+        const lett = document.getElementById('letter');
+        const wrap = document.getElementById('main-wrap');
+
+        function handleTap() {
+            taps++;
+            wrap.classList.remove('shake');
+            void wrap.offsetWidth;
+            wrap.classList.add('shake');
+
+            if (taps === 1) env.style.transform = "scale(1.05)";
+            if (taps === 2) env.style.transform = "scale(1.15)";
+
+            if (taps === 3) {
+                env.style.opacity = "0";
+                env.style.transform = "scale(0.8) translateY(-100px)";
+                setTimeout(() => {
+                    env.style.display = "none";
+                    lett.classList.add('show-letter');
+                }, 400);
+            }
+        }
+    </script>
+</body>
+</html>
